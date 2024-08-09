@@ -1,0 +1,3 @@
+[submodule "bmotion"]
+	path = bmotion
+	url = https://github.com/jamesoff/bmotion
