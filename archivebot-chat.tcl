@@ -1,7 +1,7 @@
 bind pubm * "#archivebot *" abc-privmsg
 
 proc abc-privmsg {nick uhost hand chan text} {
-	if {([string index $text 0] == "!") && ([string index $text 1] != " ")} {
+	if {([string index $text 0] == "!") && (([string index $text 1] != " ") && ([string length $text] != "1"))} {
 	    return 0
 	}
 	if {([string match "*@archiveteam/Aramaki" $uhost]) || ([string match "*@hackint/user/h2ibot" $uhost])} { 
