@@ -89,15 +89,6 @@ proc fixkarma {nick uhost hand chan text} {
             return 0
         }
     }
-    if {[kdb eval {SELECT locked FROM lkarma WHERE item=$item}] == "Y"} { 
-      set lockedk [kdb eval {SELECT karma FROM lkarma WHERE item=$item}]
-      if {$lockedk == 0} {
-        puthelp "PRIVMSG $chan :You can't change the karma of \002$item\002!"
-      } {   
-        puthelp "PRIVMSG $chan :Karma for \002$item\002 is locked at \002$lockedk\002."
-      }
-        return 0
-    }
 
     set score [string range $text end-1 end]
     if {[string match "++" $score]} {
@@ -105,6 +96,17 @@ proc fixkarma {nick uhost hand chan text} {
     } elseif {[string match "--" $score]} {
       set scoring -1
     }  
+
+    if {[kdb eval {SELECT locked FROM lkarma WHERE item=$item}] == "Y"} { 
+      set lockedk [kdb eval {SELECT karma FROM lkarma WHERE item=$item}]
+      puthelp "NOTICE $chan :\[karma\] '$item' now has $lockedk karma!"
+      if {[string match "++" $score]} {
+          puthelp "PRIVMSG $karma(logchan) :\[karma\] $nick!$uhost ($acct) ++'d locked '$item' in $chan - score: $lockedk"
+      } elseif {[string match "--" $score]} {
+          puthelp "PRIVMSG $karma(logchan) :\[karma\] $nick!$uhost ($acct) --'d locked '$item' in $chan - score: $lockedk" 
+      }
+        return 0
+    }
 
     if {![info exists kfcount($uhost)]} {
       set kfcount($uhost) 0
