@@ -1,3 +1,10 @@
+## Wat is
+
+fireonlive's eggdrop scripts for AT
+
+## How do
+
+```
 set m00nie::youtube::key "youtube api key"
 ##### SCRIPTS #####
 
@@ -40,3 +47,4 @@ source scripts/archivebot-chat.tcl
 source scripts/down-the-tube-chat.tcl
 source scripts/telegrab-chat.tcl
 source scripts/youtube.tcl
+```
