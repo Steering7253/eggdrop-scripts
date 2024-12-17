@@ -20,7 +20,7 @@ setudef flag nitter
 
 bind pubm * "% *" outputNitterLink
 
-set nitterHost "nitter.lucabased.xyz"
+set nitterHost "xcancel.com"
 set nitterAntiFloodSeconds 5
 
 array set ::nitterAntiFlood {}
