@@ -139,3 +139,38 @@ proc acct_chflags {nick user hand chan text} {
       putserv "PRIVMSG $chan :$nick, you do not have access to ,chflags"
     }
 }
+
+bind PUB * ,part acct_part
+
+proc acct_part {nick user hand chan text} {
+    set accthand [finduser -account [getaccount $nick]]
+    if [string match $accthand "*"] {
+      putserv "PRIVMSG $chan :$nick, you are not authenticated to NickServ and/or I don't know you!"
+      return 1
+    }
+    if {[matchattr $accthand +o]} {
+      channel remove [string trim $text]
+      putquick "PRIVMSG $chan :\[part\] removed [string trim $text]"
+      savechannels
+    } else {
+      putserv "PRIVMSG $chan :$nick, you do not have access to ,part"
+    }
+}
+
+bind MSG * part acct_part_pm
+
+proc acct_part_pm {nick user hand text} {
+    set accthand [finduser -account [getaccount $nick]]
+    if [string match $accthand "*"] {
+      putserv "NOTICE $nick :you are not authenticated to NickServ and/or I don't know you!"
+      return 1
+    }
+    if {[matchattr $accthand +o]} {
+      channel remove [string trim $text]
+      putquick "NOTICE $nick :\[part\] removed [string trim $text]"
+      putquick "PRIVMSG #fire-trail :\[part\] $nick ($accthand) removed [string trim $text]"
+      savechannels
+    } else {
+      putserv "NOTICE $nick :you do not have access to part"
+    }
+}
