@@ -66,7 +66,6 @@ bind pubm $karma(flags) "% *++" fixkarma
 proc fixkarma {nick uhost hand chan text} {
   global karma kdbfile kfcount kfflood
   if {[string match "*+lkarma*" [channel info $chan]]} {  
-    set nick [string map { "\{" "\\\{" "\}" "\\\}" "\[" "\\\[" "\]" "\\\]" } $nick]
     set uhost [string tolower $uhost]
     set acct [getaccount $nick]
     set hand [finduser -account $acct]
